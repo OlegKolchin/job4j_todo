@@ -1,0 +1,44 @@
+.holder {
+    background: #f0efe9;
+    min-height: 100vh;
+}
+
+.rounded {
+    border-radius: 1rem !important;
+}
+
+.text-gray {
+    color: #aaa;
+}
+
+input:not(#showAll):checked + label {
+    text-decoration: line-through;
+    color: #adb5bd;
+}
+
+label {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+.form-control {
+    background: #f0efe9;
+    border: #f0efe9;
+}
+
+#button-addon2 {
+    background: #f0efe9;
+    border: #f0efe9;
+}
+
+#button-addon2:hover {
+    background: #adb5bd;
+    border: #adb5bd;
+}
+
+
+
+
+
