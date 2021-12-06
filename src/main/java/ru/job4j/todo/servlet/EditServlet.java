@@ -17,11 +17,7 @@ public class EditServlet extends HttpServlet {
         String s = req.getParameter("id");
         int id = Integer.parseInt(s);
         Item item = store.findById(id);
-        if (!item.isDone()) {
-            item.setDone(true);
-        } else {
-            item.setDone(false);
-        }
+        item.setDone(!item.isDone());
         store.save(item);
     }
 }
