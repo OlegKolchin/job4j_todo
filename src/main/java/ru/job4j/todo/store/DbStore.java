@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.todo.model.Item;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class DbStore implements Store {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -27,12 +28,7 @@ public class DbStore implements Store {
 
     @Override
     public Item findById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item item = session.get(Item.class, id);
-        session.getTransaction().commit();
-        session.close();
-        return item;
+        return tx(session -> session.get(Item.class, id));
     }
 
     @Override
@@ -40,22 +36,29 @@ public class DbStore implements Store {
         if (findById(id) == null) {
             return false;
         }
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item item = session.get(Item.class, id);
-        session.delete(item);
-        session.getTransaction().commit();
-        session.close();
-        return true;
+        return tx(session -> {
+            Item item = session.get(Item.class, id);
+            session.delete(item);
+            return true;
+        });
     }
 
     @Override
     public List<Item> findAll() {
+        return tx(session -> session.createQuery("from Item").list());
+    }
+
+    private <T> T tx(final Function<Session, T> command) {
         Session session = sf.openSession();
-        session.beginTransaction();
-        List rsl = session.createQuery("from Item").list();
-        session.getTransaction().commit();
-        session.close();
-        return rsl;
+        try {
+            T rsl = command.apply(session);
+            session.beginTransaction().commit();
+            return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 }
