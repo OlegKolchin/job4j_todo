@@ -6,6 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -24,6 +25,21 @@ public class DbStore implements Store {
         session.saveOrUpdate(item);
         session.getTransaction().commit();
         session.close();
+    }
+
+    @Override
+    public void save(User user) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.saveOrUpdate(user);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        String query = String.format("FROM User U WHERE U.email = '%s'", email);
+        return (User) tx(session -> session.createQuery(query).list().get(0));
     }
 
     @Override

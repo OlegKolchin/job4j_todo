@@ -4,6 +4,7 @@ function addItem() {
         url: 'http://localhost:8080/todo/task.do',
         data: {
             description: $('#description').val(),
+            email: sessionStorage.getItem('user_email')
         }
     }).done(function () {
         window.location.reload();

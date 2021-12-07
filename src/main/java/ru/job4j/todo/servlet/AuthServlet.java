@@ -2,7 +2,6 @@ package ru.job4j.todo.servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.DbStore;
 
@@ -13,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 
-public class TaskServlet extends HttpServlet {
+public class AuthServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
 
     @Override
@@ -23,7 +21,7 @@ public class TaskServlet extends HttpServlet {
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
         DbStore store = new DbStore();
-        String json = GSON.toJson(store.findAll());
+        String json = GSON.toJson(store.findUserByEmail(req.getParameter("email")));
         output.write(json.getBytes(StandardCharsets.UTF_8));
         output.flush();
         output.close();
@@ -31,10 +29,12 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DbStore store = new DbStore();
-        String description = req.getParameter("description");
         String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        DbStore store = new DbStore();
         User user = store.findUserByEmail(email);
-        store.save(Item.of(description, user));
+        if (user == null && !user.getPassword().equals(password)) {
+            resp.sendError(400);
+        }
     }
 }

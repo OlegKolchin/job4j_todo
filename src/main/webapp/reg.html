@@ -21,20 +21,12 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="mycss.css">
+    <script src="scripts/reg.js"></script>
 
-    <title>TODO list</title>
-    <script type="text/javascript" src="scripts/view.js"></script>
-    <script src="scripts/edit.js"></script>
-    <script src="scripts/date.js"></script>
-    <script>
-        function redirect() {
-            window.location.href = 'http://localhost:8080/todo/login.html';
-        }
-    </script>
+    <title>Registration</title>
+
 </head>
 <body>
-<script>
-</script>
 <div class="holder d-flex align-items-center justify-content-center">
     <div class="container">
         <header class="text-center mb-5">
@@ -42,27 +34,29 @@
         </header>
         <div class="row">
             <div class="col-lg-5 mx-auto">
-                <div class="card rounded border-0 shadow-sm position-relative" id="mainForm">
-                    <div id="upperMenu" class="input-group-append" style="position: absolute; top: 10px; right: 10px;">
-                        <button class="btn btn-outline-secondary" type="button" id="button-login" onclick="redirect()">Войти</button>
-                    </div>
+                <div class="card rounded border-0 shadow-sm position-relative">
                     <div class="card-body p-5">
-                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom"><img src="icons/calendar-check.svg" width="48" height="48"/>
+                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom"><img src="icons/card-list.svg" width="48" height="48"/>
                             <div class="ms-3">
-                                <h4 class="text-uppercase fw-weight-bold mb-0" id="day"></h4>
+                                <h4 class="text-uppercase fw-weight-bold mb-0" id="registration">Регистрация</h4>
                                 <p class="text-gray fst-italic mb-0" id="date"></p>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input id="description" type="text" class="form-control" placeholder="Новая задача" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="if (validate()) addItem()">Добавить</button>
+                        <form>
+                            <div class="input-group mb-3">
+                                <input id="name" type="text" class="form-control" placeholder="Имя" aria-label="Recipient's username" aria-describedby="button-addon2">
                             </div>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="showAll" onchange="showSwitch()">
-                            <label class="form-check-label" for="showAll"><span class="fst-normal pl-1">Показать все задачи</span></label>
-                        </div>
+                            <div class="input-group mb-3">
+                                <input id="email" type="text" class="form-control" placeholder="Email" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            </div>
+                            <div class="input-group mb-3">
+                                <input id="password" type="password" class="form-control" placeholder="Password" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="if(validate()) reg()">Зарегистрироваться</button>
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon3" onclick="redirectIndex()">На главную</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

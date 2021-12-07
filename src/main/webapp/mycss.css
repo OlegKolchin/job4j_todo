@@ -28,15 +28,26 @@ a {
     border: #f0efe9;
 }
 
-#button-addon2 {
+.btn-outline-secondary {
     background: #f0efe9;
     border: #f0efe9;
 }
 
-#button-addon2:hover {
+.btn-outline-secondary:hover {
     background: #adb5bd;
     border: #adb5bd;
 }
+
+
+.button-logout:disabled,
+button[disabled]{
+    background: #f0efe9;
+    border: #f0efe9;
+}
+
+
+
+
 
 
 
