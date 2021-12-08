@@ -52,6 +52,13 @@ function showSwitch() {
 }
 
 function logout() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/todo/logout.do',
+    }).done(function (data) {
+    }).fail(function (err) {
+        console.log(err);
+    });
     sessionStorage.clear();
     location.href = 'http://localhost:8080/todo/';
     $('#upperMenu').replaceWith('<div id="upperMenu" class="input-group-append" style="position: absolute; top: 10px; right: 10px;">\n' +

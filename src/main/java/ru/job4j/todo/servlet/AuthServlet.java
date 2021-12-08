@@ -33,8 +33,10 @@ public class AuthServlet extends HttpServlet {
         String password = req.getParameter("password");
         DbStore store = new DbStore();
         User user = store.findUserByEmail(email);
-        if (user == null && !user.getPassword().equals(password)) {
+        if (user == null || !user.getPassword().equals(password)) {
             resp.sendError(400);
+        } else {
+            req.getSession().setAttribute("session_user", user);
         }
     }
 }

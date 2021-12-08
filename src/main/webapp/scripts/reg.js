@@ -10,6 +10,9 @@ function reg() {
     }).done(function () {
         redirect();
     }).fail(function (err) {
+        if (err.status === 409) {
+            alert('Пользователь с указанным email или именем уже существует!');
+        }
         console.log(err);
     });
 }

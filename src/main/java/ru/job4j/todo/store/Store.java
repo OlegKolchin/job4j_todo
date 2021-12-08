@@ -14,6 +14,8 @@ public interface Store {
 
     public User findUserByEmail(String email);
 
+    public User findUserByName(String name);
+
     public boolean delete(int id);
 
     public List<Item> findAll();

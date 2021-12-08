@@ -1,9 +1,9 @@
 create table users(
     id serial primary key,
-    name text,
+    name text unique not null,
     email text unique not null,
-    password text not null,
-)
+    password text not null
+);
 
 create table items(
     id serial primary key,

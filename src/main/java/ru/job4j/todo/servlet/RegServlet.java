@@ -16,6 +16,10 @@ public class RegServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         DbStore store = new DbStore();
-        store.save(User.of(name, email, password));
+        if (store.findUserByName(name) != null || store.findUserByEmail(email) != null) {
+            resp.sendError(409);
+        } else {
+            store.save(User.of(name, email, password));
+        }
     }
 }
