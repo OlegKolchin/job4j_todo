@@ -39,25 +39,13 @@ public class DbStore implements Store {
     @Override
     public User findUserByEmail(String email) {
         String query = String.format("FROM User U WHERE U.email = '%s'", email);
-        return (User) tx(session -> {
-            List list = session.createQuery(query).list();
-            if (list.isEmpty()) {
-                return null;
-            }
-            return list.get(0);
-        });
+        return (User) tx(session -> session.createQuery(query).uniqueResult());
     }
 
     @Override
     public User findUserByName(String name) {
         String query = String.format("FROM User U WHERE U.name = '%s'", name);
-        return (User) tx(session -> {
-            List list = session.createQuery(query).list();
-            if (list.isEmpty()) {
-                return null;
-            }
-            return list.get(0);
-        });
+        return (User) tx(session -> session.createQuery(query).uniqueResult());
     }
 
     @Override
