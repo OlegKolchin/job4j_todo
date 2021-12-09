@@ -10,6 +10,8 @@ public interface Store {
 
     public void save(User user);
 
+    public void updateItem(int id);
+
     public Item findById(int id);
 
     public User findUserByEmail(String email);

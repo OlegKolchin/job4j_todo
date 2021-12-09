@@ -1,6 +1,4 @@
 package ru.job4j.todo.servlet;
-
-import ru.job4j.todo.model.Item;
 import ru.job4j.todo.store.DbStore;
 
 import javax.servlet.ServletException;
@@ -16,8 +14,6 @@ public class EditServlet extends HttpServlet {
         DbStore store = new DbStore();
         String s = req.getParameter("id");
         int id = Integer.parseInt(s);
-        Item item = store.findById(id);
-        item.setDone(!item.isDone());
-        store.save(item);
+        store.updateItem(id);
     }
 }

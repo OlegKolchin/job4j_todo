@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -55,14 +56,22 @@ public class DbStore implements Store {
 
     @Override
     public boolean delete(int id) {
-        if (findById(id) == null) {
-            return false;
-        }
-        return tx(session -> {
-            Item item = session.get(Item.class, id);
-            session.delete(item);
-            return true;
-        });
+        Session session = sf.openSession();
+        session.beginTransaction();
+        boolean rsl = session.createQuery("delete from Item where id = " + id).executeUpdate() > 0;
+        session.getTransaction().commit();
+        session.close();
+        return rsl;
+    }
+
+    @Override
+    public void updateItem(int id) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.createSQLQuery("update items set done = not(done) where id=" + id)
+                .executeUpdate();
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
@@ -83,4 +92,5 @@ public class DbStore implements Store {
             session.close();
         }
     }
+
 }
