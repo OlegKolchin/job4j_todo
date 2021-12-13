@@ -1,9 +1,13 @@
 package ru.job4j.todo.model;
 
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "items")
@@ -18,6 +22,9 @@ public class Item {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Category> categories = new HashSet<>();
 
     public Item() {
     }
@@ -70,4 +77,36 @@ public class Item {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return id == item.id && done == item.done && Objects.equals(description, item.description)
+                && Objects.equals(created, item.created) && Objects.equals(user, item.user)
+                && Objects.equals(categories, item.categories);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, created, done, user, categories);
+    }
+
 }

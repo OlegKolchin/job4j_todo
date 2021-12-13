@@ -2,6 +2,7 @@ package ru.job4j.todo.servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.DbStore;
@@ -13,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
@@ -34,7 +38,15 @@ public class TaskServlet extends HttpServlet {
         DbStore store = new DbStore();
         String description = req.getParameter("description");
         String email = req.getParameter("email");
+        String[] rsl = req.getParameter("categories").split("");
+        List<Integer> list = Arrays.stream(rsl).map(Integer::parseInt).collect(Collectors.toList());
+        HashSet<Category> categories = new HashSet<>();
+        for (int i : list) {
+            categories.add(store.findCategory(i));
+        }
         User user = store.findUserByEmail(email);
-        store.save(Item.of(description, user));
+        Item item = Item.of(description, user);
+        item.setCategories(categories);
+        store.save(item);
     }
 }

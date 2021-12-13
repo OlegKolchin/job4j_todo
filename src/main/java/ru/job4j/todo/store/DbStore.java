@@ -6,6 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -33,6 +34,15 @@ public class DbStore implements Store {
         Session session = sf.openSession();
         session.beginTransaction();
         session.saveOrUpdate(user);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
+    public void save(Category category) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.saveOrUpdate(category);
         session.getTransaction().commit();
         session.close();
     }
@@ -91,6 +101,15 @@ public class DbStore implements Store {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<Category> findAllCategories() {
+        return tx(session -> session.createQuery("from Category").list());
+    }
+
+    public Category findCategory(int id) {
+        return tx(session -> session.get(Category.class, id));
     }
 
 }

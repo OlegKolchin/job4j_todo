@@ -1,5 +1,6 @@
 package ru.job4j.todo.store;
 
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -9,6 +10,8 @@ public interface Store {
     public void save(Item item);
 
     public void save(User user);
+
+    public void save(Category category);
 
     public void updateItem(int id);
 
@@ -21,6 +24,8 @@ public interface Store {
     public boolean delete(int id);
 
     public List<Item> findAll();
+
+    public List<Category> findAllCategories();
 
 
 }
