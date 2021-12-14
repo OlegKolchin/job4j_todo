@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
@@ -123,6 +122,12 @@ public class DbStore implements Store {
             categories.add(store.findCategory(i));
         }
         return categories;
+    }
+
+    public static void main(String[] args) {
+        Item item = new DbStore().findById(3);
+        System.out.println(item.getCreated());
+
     }
 
 }

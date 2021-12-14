@@ -1,10 +1,8 @@
 package ru.job4j.todo.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.persistence.*;;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +14,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    private Timestamp created;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
     private boolean done;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -32,7 +33,7 @@ public class Item {
     public static Item of(String description, User user) {
         Item item = new Item();
         item.description = description;
-        item.created = new Timestamp(System.currentTimeMillis());
+        item.created = new Date(System.currentTimeMillis());
         item.done = false;
         item.user = user;
         return item;
@@ -54,11 +55,11 @@ public class Item {
         this.description = description;
     }
 
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
