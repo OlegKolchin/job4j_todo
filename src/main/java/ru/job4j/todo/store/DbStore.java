@@ -10,10 +10,8 @@ import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class DbStore implements Store {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -23,9 +21,12 @@ public class DbStore implements Store {
             .buildMetadata().buildSessionFactory();
 
     @Override
-    public void save(Item item) {
+    public void save(Item item, String categories) {
         Session session = sf.openSession();
         session.beginTransaction();
+        Arrays.stream(categories.split(""))
+                .map(ct -> session.get(Category.class, Integer.parseInt(ct)))
+                .forEach(item::addCategory);
         session.saveOrUpdate(item);
         session.getTransaction().commit();
         session.close();
@@ -113,21 +114,4 @@ public class DbStore implements Store {
     public Category findCategory(int id) {
         return tx(session -> session.get(Category.class, id));
     }
-
-    public HashSet<Category> parseCategories(String param, DbStore store) {
-        String[] rsl = param.split("");
-        List<Integer> list = Arrays.stream(rsl).map(Integer::parseInt).collect(Collectors.toList());
-        HashSet<Category> categories = new HashSet<>();
-        for (int i : list) {
-            categories.add(store.findCategory(i));
-        }
-        return categories;
-    }
-
-    public static void main(String[] args) {
-        Item item = new DbStore().findById(3);
-        System.out.println(item.getCreated());
-
-    }
-
 }

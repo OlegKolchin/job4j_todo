@@ -37,7 +37,6 @@ public class TaskServlet extends HttpServlet {
         String categories = req.getParameter("categories");
         User user = store.findUserByEmail(email);
         Item item = Item.of(description, user);
-        item.setCategories(store.parseCategories(categories, store));
-        store.save(item);
+        store.save(item, categories);
     }
 }
